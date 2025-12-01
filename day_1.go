@@ -11,6 +11,17 @@ import (
 
 const MAX_DIAL_PTR = 99
 
+func mod(dividend int, divisor int) int {
+  return ((dividend % divisor) + divisor) % divisor
+}
+
+func abs(num int) int {
+  if num < 0 {
+    return -num
+  }
+  return num
+}
+
 func getRotationAmount(rotation string) (int, error) {
   direction, stringAmount := string(rotation[0]), string(rotation[1:])
   amount, err := strconv.Atoi(stringAmount)
@@ -41,11 +52,7 @@ func part1(rotations []string) string {
       panic(err)
     }
 
-    ptr += amount
-    for ptr < 0 {
-      ptr += (MAX_DIAL_PTR + 1)
-    }
-    ptr %= MAX_DIAL_PTR + 1
+    ptr = mod(ptr +amount, MAX_DIAL_PTR + 1)
 
     if ptr == 0 {
       password += 1
@@ -61,31 +68,18 @@ func part2(rotations []string) string {
   var password int
 
   for i := 0; i < len(rotations) - 1; i++ {
-    var fullRotationTimes int
     oldPtr := ptr
     amount, err := getRotationAmount(rotations[i])
     if err != nil {
       panic(err)
     }
-    ptr += amount
-    for ptr < 0 {
-      ptr += (MAX_DIAL_PTR + 1)
-    }
-    ptr %= MAX_DIAL_PTR + 1
-    if amount < 0 {
-      currentAmount := amount + (MAX_DIAL_PTR + 1)
-      for currentAmount < 0 {
-        fullRotationTimes++
-        currentAmount += (MAX_DIAL_PTR + 1)
-      }
-    } else if amount > 0 {
-      fullRotationTimes += amount/(MAX_DIAL_PTR + 1)
-    }
+    ptr = mod(ptr +amount, MAX_DIAL_PTR + 1)
 
     direction := string(rotations[i][0])
 
+    fullRotationTimes := abs(amount/(MAX_DIAL_PTR + 1))
     password += fullRotationTimes
-    if ptr == 0 {
+    if ptr == 0 && amount != 0 {
       password += 1
     } else if direction == "L" && ptr > oldPtr && oldPtr != 0 {
       password += 1
