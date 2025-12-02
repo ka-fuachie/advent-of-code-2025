@@ -46,7 +46,7 @@ func part1(rotations []string) string {
 
   var password int
 
-  for i := 0; i < len(rotations) - 1; i++ {
+  for i := 0; i < len(rotations); i++ {
     amount, err := getRotationAmount(rotations[i])
     if err != nil {
       panic(err)
@@ -67,7 +67,7 @@ func part2(rotations []string) string {
 
   var password int
 
-  for i := 0; i < len(rotations) - 1; i++ {
+  for i := 0; i < len(rotations); i++ {
     oldPtr := ptr
     amount, err := getRotationAmount(rotations[i])
     if err != nil {

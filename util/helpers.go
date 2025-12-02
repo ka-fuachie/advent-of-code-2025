@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 )
 
 func ReadInput(day int) (string, error) {
@@ -13,5 +14,5 @@ func ReadInput(day int) (string, error) {
     return "", err
   }
 
-  return string(data), nil
+  return strings.Trim(string(data), "\n"), nil
 }
