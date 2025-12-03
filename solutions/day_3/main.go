@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 
@@ -33,7 +34,7 @@ func part1(banks []string) string {
     left, right := 0, len(bank) - 1
     maxLeftIndex, maxRightIndex := left, right
 
-    for {
+    for left != right - 1 {
       if digits[maxLeftIndex] > digits[maxRightIndex] {
         right--
         if digits[right] > digits[maxRightIndex] {
@@ -44,10 +45,6 @@ func part1(banks []string) string {
         if digits[left] > digits[maxLeftIndex] {
           maxLeftIndex = left
         }
-      }
-
-      if left == right - 1 {
-        break
       }
     }
 
@@ -69,7 +66,36 @@ func part1(banks []string) string {
 }
 
 func part2(banks []string) string {
-  return ""
+  const TOTAL_DIGITS_PER_JOLTAGE = 12
+
+  var totalJoltage int
+  for _, bank := range banks {
+    digits, err := splitStringToIntSlice(bank)
+    if err != nil {
+      panic(err)
+    }
+    
+    joltage := 0
+    nextJthIndex := 0
+
+    // for i := 0; i < TOTAL_DIGITS_PER_JOLTAGE; i++ {
+    for i := range TOTAL_DIGITS_PER_JOLTAGE {
+      maxJthIndex := nextJthIndex
+
+      for j := nextJthIndex; j <= len(bank) - TOTAL_DIGITS_PER_JOLTAGE + i; j++ {
+        if digits[j] > digits[maxJthIndex] {
+          maxJthIndex = j
+        }
+      }
+
+      joltage += digits[maxJthIndex] * int(math.Pow10(TOTAL_DIGITS_PER_JOLTAGE - i - 1))
+      nextJthIndex = maxJthIndex + 1
+    }
+
+    totalJoltage += joltage
+  }
+
+  return strconv.Itoa(totalJoltage)
 }
 
 func main() {
