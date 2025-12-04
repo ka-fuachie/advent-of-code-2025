@@ -44,6 +44,30 @@ func countRollsInAdjacentPositions(grid [][]string, y int, x int) int {
   return totalAdjacentRolls
 }
 
+func countRollsInAdjacentPositionsWithRemovedPositions(grid [][]string, y int, x int, removedPositions map[string]bool) int {
+  totalAdjacentRolls := 0
+  for row := max(y - 1, 0); row <= min(y + 1, len(grid) - 1); row++ {
+    for col := max(x - 1, 0); col <= min(x + 1, len(grid[row]) - 1); col++ {
+      if row == y && col == x {
+        continue
+      }
+
+      if grid[row][col] == "." {
+        continue
+      } else if grid[row][col] == "@" {
+        if removedPositions[strconv.Itoa(col) + "," + strconv.Itoa(row)] {
+          continue
+        }
+        totalAdjacentRolls += 1
+      } else {
+        panic(errors.New("Unexpected character at grid position (" + strconv.Itoa(col) + ", " + strconv.Itoa(row) + "): " + grid[row][col]))
+      }
+    }
+  }
+
+  return totalAdjacentRolls
+}
+
 func part1(grid [][]string) string {
   totalAccessibleRolls := 0
 
@@ -64,7 +88,39 @@ func part1(grid [][]string) string {
 }
 
 func part2(grid [][]string) string {
-  return ""
+  // Brute force
+  totalAccessibleRollsAfterRemovals := 0
+  removedPositions := make(map[string]bool)
+
+  for {
+    totalAccessibleRolls := 0
+
+    for row := range len(grid) {
+      for col := range len(grid[row]) {
+        if grid[row][col] != "@" {
+          continue
+        }
+
+        if removedPositions[strconv.Itoa(col) + "," + strconv.Itoa(row)] {
+          continue
+        }
+
+        totalAdjacentRolls := countRollsInAdjacentPositionsWithRemovedPositions(grid, row, col, removedPositions)
+        if totalAdjacentRolls < 4 {
+          totalAccessibleRolls += 1
+          removedPositions[strconv.Itoa(col) + "," + strconv.Itoa(row)] = true
+        }
+      }
+    }
+
+    if totalAccessibleRolls == 0 {
+      break
+    }
+
+    totalAccessibleRollsAfterRemovals += totalAccessibleRolls
+  }
+  
+  return strconv.Itoa(totalAccessibleRollsAfterRemovals)
 }
 
 func main() {
