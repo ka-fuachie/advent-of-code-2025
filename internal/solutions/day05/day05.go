@@ -1,12 +1,9 @@
-package main
+package day05
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 	"strings"
-
-	"github.com/ka-fuachie/advent-of-code-2025/util"
 )
 
 func min(a int, b int) int {
@@ -114,48 +111,7 @@ func resolveIdRanges(idRanges []idRange) []idRange {
   return resolveIdRanges
 }
 
-func part1(freshIdRanges []idRange, availableIds []int) string {
-  totalFreshAvailableingredients := 0
-  for _, id := range availableIds {
-    for _, idRange := range freshIdRanges {
-      if !idRange.includes(id) {
-        continue
-      }
-
-      totalFreshAvailableingredients+=1
-      break
-    }
-  }
-
-  return strconv.Itoa(totalFreshAvailableingredients)
-}
-
-func part2(freshIdRanges []idRange, _ []int) string {
-  totalIdsWithinFreshRanges := 0
-  for _, idRange := range resolveIdRanges(freshIdRanges) {
-    totalIdsWithinFreshRanges += idRange.length()
-  }
-
-  return strconv.Itoa(totalIdsWithinFreshRanges)
-}
-
-func main() {
-  input, err := util.ReadInput(5)
-  if err != nil {
-    panic(err)
-  }
-//   input := `3-5
-// 10-14
-// 16-20
-// 12-18
-//
-// 1
-// 5
-// 8
-// 11
-// 17
-// 32`
-
+func parseInput(input string) ([]idRange, []int) {
   inputParts := strings.Split(input, "\n\n")
   freshIdRangesPart := inputParts[0]
   availableIdsPart := inputParts[1]
@@ -181,6 +137,36 @@ func main() {
     availableIds = append(availableIds, id)
   }
 
-  fmt.Println(part1(freshIdRanges, availableIds))
-  fmt.Println(part2(freshIdRanges, availableIds))
+  return freshIdRanges, availableIds
 }
+
+type solution struct {}
+
+func (s solution) Part1(input string) string {
+  freshIdRanges, availableIds := parseInput(input)
+  totalFreshAvailableingredients := 0
+  for _, id := range availableIds {
+    for _, idRange := range freshIdRanges {
+      if !idRange.includes(id) {
+        continue
+      }
+
+      totalFreshAvailableingredients+=1
+      break
+    }
+  }
+
+  return strconv.Itoa(totalFreshAvailableingredients)
+}
+
+func (s solution) Part2(input string) string {
+  freshIdRanges, _ := parseInput(input)
+  totalIdsWithinFreshRanges := 0
+  for _, idRange := range resolveIdRanges(freshIdRanges) {
+    totalIdsWithinFreshRanges += idRange.length()
+  }
+
+  return strconv.Itoa(totalIdsWithinFreshRanges)
+}
+
+var Solution solution = solution{}

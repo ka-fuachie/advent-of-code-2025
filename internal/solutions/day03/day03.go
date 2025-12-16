@@ -1,12 +1,8 @@
-package main
+package day03
 
 import (
-	"fmt"
-	"math"
 	"strconv"
 	"strings"
-
-	"github.com/ka-fuachie/advent-of-code-2025/util"
 )
 
 func splitStringToIntSlice(str string) ([]int, error) {
@@ -23,7 +19,14 @@ func splitStringToIntSlice(str string) ([]int, error) {
   return intSlice, nil
 }
 
-func part1(banks []string) string {
+func parseInput(input string) []string {
+  return strings.Split(input, "\n")
+}
+
+type solution struct {}
+
+func (s solution) Part1(input string) string {
+  banks := parseInput(input)
   var totalJoltage int
   for _, bank := range banks {
     digits, err := splitStringToIntSlice(bank)
@@ -65,7 +68,8 @@ func part1(banks []string) string {
   return strconv.Itoa(totalJoltage)
 }
 
-func part2(banks []string) string {
+func (s solution) Part2(input string) string {
+  banks := parseInput(input)
   const TOTAL_DIGITS_PER_JOLTAGE = 12
 
   var totalJoltage int
@@ -98,18 +102,4 @@ func part2(banks []string) string {
   return strconv.Itoa(totalJoltage)
 }
 
-func main() {
-  input, err := util.ReadInput(3)
-  if err != nil {
-    panic(err)
-  }
-//   input := `987654321111111
-// 811111111111119
-// 234234234234278
-// 818181911112111`
-
-  banks := strings.Split(input, "\n")
-
-  fmt.Println(part1(banks))
-  fmt.Println(part2(banks))
-}
+var Solution solution = solution{}

@@ -1,11 +1,9 @@
-package main
+package day02
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 	"strings"
-	"github.com/ka-fuachie/advent-of-code-2025/util"
 )
 
 func parseRange(rangeStr string) ([]int, error) {
@@ -84,33 +82,7 @@ func getNumsWithRepeatedDigitsSequenceWithinRange(rangeVal []int) []int {
   return nums
 }
 
-func part1(rangeVals [][]int) string {
-  totalInvalidIdsSum := 0
-  for _, rangeVal := range rangeVals {
-    for _, invalidId := range getNumsWithTwiceRepeatedDigitsSequenceWithinRange(rangeVal) {
-      totalInvalidIdsSum += invalidId
-    }
-  }
-  return strconv.Itoa(totalInvalidIdsSum)
-}
-
-func part2(rangeVals [][]int) string {
-  totalInvalidIdsSum := 0
-  for _, rangeVal := range rangeVals {
-    for _, invalidId := range getNumsWithRepeatedDigitsSequenceWithinRange(rangeVal) {
-      totalInvalidIdsSum += invalidId
-    }
-  }
-  return strconv.Itoa(totalInvalidIdsSum)
-}
-
-func main() {
-  input, err := util.ReadInput(2)
-  if err != nil {
-    panic(err)
-  }
-  // input := "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124"
-
+func parseInput(input string) [][]int {
   rangeStrs := strings.Split(input, ",")
   rangeVals := make([][]int, len(rangeStrs))
 
@@ -123,6 +95,31 @@ func main() {
     rangeVals[i] = rangeVal
   }
 
-  fmt.Println(part1(rangeVals))
-  fmt.Println(part2(rangeVals))
+  return rangeVals
 }
+
+type solution struct {}
+
+func (s solution) Part1(input string) string {
+  rangeVals := parseInput(input)
+  totalInvalidIdsSum := 0
+  for _, rangeVal := range rangeVals {
+    for _, invalidId := range getNumsWithTwiceRepeatedDigitsSequenceWithinRange(rangeVal) {
+      totalInvalidIdsSum += invalidId
+    }
+  }
+  return strconv.Itoa(totalInvalidIdsSum)
+}
+
+func (s solution) Part2(input string) string {
+  rangeVals := parseInput(input)
+  totalInvalidIdsSum := 0
+  for _, rangeVal := range rangeVals {
+    for _, invalidId := range getNumsWithRepeatedDigitsSequenceWithinRange(rangeVal) {
+      totalInvalidIdsSum += invalidId
+    }
+  }
+  return strconv.Itoa(totalInvalidIdsSum)
+}
+
+var Solution solution = solution{}

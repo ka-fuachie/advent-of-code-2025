@@ -1,12 +1,9 @@
-package main
+package day01
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 	"strings"
-
-	"github.com/ka-fuachie/advent-of-code-2025/util"
 )
 
 const MAX_DIAL_PTR = 99
@@ -41,12 +38,19 @@ func getRotationAmount(rotation string) (int, error) {
   return amount, nil
 }
 
-func part1(rotations []string) string {
+func parseInput(input string) []string {
+  return strings.Split(input, "\n")
+}
+
+type solution struct{}
+
+func (s solution) Part1(input string) string {
+  rotations := parseInput(input)
   var ptr int = 50
 
   var password int
 
-  for i := 0; i < len(rotations); i++ {
+  for i := range rotations {
     amount, err := getRotationAmount(rotations[i])
     if err != nil {
       panic(err)
@@ -62,12 +66,13 @@ func part1(rotations []string) string {
   return strconv.Itoa(password)
 }
 
-func part2(rotations []string) string {
+func (s solution) Part2(input string) string {
+  rotations := parseInput(input)
   var ptr int = 50
 
   var password int
 
-  for i := 0; i < len(rotations); i++ {
+  for i := range rotations {
     oldPtr := ptr
     amount, err := getRotationAmount(rotations[i])
     if err != nil {
@@ -91,15 +96,4 @@ func part2(rotations []string) string {
   return  strconv.Itoa(password)
 }
 
-
-func main() {
-  input, err := util.ReadInput(1)
-  if err != nil {
-    panic(err)
-  }
-
-  rotations := strings.Split(input, "\n")
-
-  fmt.Println(part1(rotations))
-  fmt.Println(part2(rotations))
-}
+var Solution solution = solution{}

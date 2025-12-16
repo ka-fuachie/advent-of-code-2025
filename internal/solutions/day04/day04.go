@@ -1,12 +1,9 @@
-package main
+package day04
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 	"strings"
-
-	"github.com/ka-fuachie/advent-of-code-2025/util"
 )
 
 func min(a int, b int) int {
@@ -68,7 +65,21 @@ func countRollsInAdjacentPositionsWithRemovedPositions(grid [][]string, y int, x
   return totalAdjacentRolls
 }
 
-func part1(grid [][]string) string {
+func parseInput(input string) [][]string {
+  rows := strings.Split(input, "\n")
+  grid := make([][]string, len(rows))
+
+  for i, row := range rows {
+    grid[i] = strings.Split(row, "")
+  }
+
+  return grid
+}
+
+type solution struct {}
+
+func (s solution) Part1(input string) string {
+  grid := parseInput(input)
   totalAccessibleRolls := 0
 
   for row := range len(grid) {
@@ -87,7 +98,8 @@ func part1(grid [][]string) string {
   return strconv.Itoa(totalAccessibleRolls)
 }
 
-func part2(grid [][]string) string {
+func (s solution) Part2(input string) string {
+  grid := parseInput(input)
   // Brute force
   totalAccessibleRollsAfterRemovals := 0
   removedPositions := make(map[string]bool)
@@ -123,29 +135,4 @@ func part2(grid [][]string) string {
   return strconv.Itoa(totalAccessibleRollsAfterRemovals)
 }
 
-func main() {
-  input, err := util.ReadInput(4)
-  if err != nil {
-    panic(err)
-  }
-//   input := `..@@.@@@@.
-// @@@.@.@.@@
-// @@@@@.@.@@
-// @.@@@@..@.
-// @@.@@@@.@@
-// .@@@@@@@.@
-// .@.@.@.@@@
-// @.@@@.@@@@
-// .@@@@@@@@.
-// @.@.@@@.@.`
-
-  rows := strings.Split(input, "\n")
-  grid := make([][]string, len(rows))
-
-  for i, row := range rows {
-    grid[i] = strings.Split(row, "")
-  }
-
-  fmt.Println(part1(grid))
-  fmt.Println(part2(grid))
-}
+var Solution solution = solution{}
