@@ -1,6 +1,7 @@
 package day03
 
 import (
+	"math"
 	"strconv"
 	"strings"
 )
