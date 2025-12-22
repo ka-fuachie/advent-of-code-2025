@@ -12,6 +12,7 @@ import (
 	"github.com/ka-fuachie/advent-of-code-2025/internal/solutions/day05"
 	"github.com/ka-fuachie/advent-of-code-2025/internal/solutions/day06"
 	"github.com/ka-fuachie/advent-of-code-2025/internal/solutions/day07"
+	"github.com/ka-fuachie/advent-of-code-2025/internal/solutions/day08"
 	"github.com/ka-fuachie/advent-of-code-2025/internal/util"
 	flag "github.com/spf13/pflag"
 )
@@ -24,6 +25,7 @@ var solutions map[int]util.Solution = map[int]util.Solution {
   5: day05.Solution,
   6: day06.Solution,
   7: day07.Solution,
+  8: day08.Solution,
 }
 
 func main() {
